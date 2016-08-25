@@ -1,6 +1,6 @@
 package alice
 
-modules    = Proof.DeMorgan
+modules    = WhoStoleTheTarts
 
 -- tests      = ...
 
