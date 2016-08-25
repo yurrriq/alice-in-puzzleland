@@ -1,28 +1,26 @@
 = Who Stole the Tarts?
 
-\begin{code}
-module WhoStoleTheTarts
-
-%default total
-\end{code}
+> module WhoStoleTheTarts
+>
+> %access  export
+> %default total
 
 
 == The First Tale
 
-\begin{code}
-namespace TheFirstTale
-  %hide Prelude.Pairs.DPair.fst
-\end{code}
-
+> namespace TheFirstTale
+>  %hide Prelude.Pairs.DPair.fst
 
 === Suspects
 
-\begin{code}
-  data MarchHare
-  data MadHatter
-  data Dormouse
-\end{code}
-
+>   data MarchHare
+>   data MadHatter
+>   data Dormouse
+>
+>   SomeoneStoleTheJam : Type
+>   SomeoneStoleTheJam = Either (    MarchHare, Not MadHatter, Not Dormouse)
+>                      $ Either (Not MarchHare,     MadHatter, Not Dormouse)
+>                               (Not MarchHare, Not MadHatter,     Dormouse)
 
 === Statements
 
@@ -30,58 +28,50 @@ namespace TheFirstTale
 I never stole the jam!
 \end{quote}
 
-\begin{code}
-  MarchHareStatement : (truth : Bool) -> Type
-  MarchHareStatement False = MarchHare
-  MarchHareStatement True  = Not MarchHare
-\end{code}
+>   MarchHareStatement : (truth : Bool) -> Type
+>   MarchHareStatement False = MarchHare
+>   MarchHareStatement True  = Not MarchHare
 
 \begin{quote}
 One of us stole it, but it wasn't me!
 \end{quote}
 
-\begin{code}
-  HatterStatement : (truth : Bool) -> Type
-  HatterStatement False = (Not MarchHare, Not Dormouse)
-  HatterStatement True  = Either MarchHare Dormouse
-  \end{code}
+>   MadHatterStatement : (truth : Bool) -> Type
+>   MadHatterStatement False = (MadHatter, Not MarchHare, Not Dormouse)
+>   MadHatterStatement True  = (Not MadHatter, Either MarchHare Dormouse)
 
 \begin{quote}
 At least one of them [spoke the truth].
 \end{quote}
 
-\begin{code}
-  DormouseStatement : (truth : Bool) -> Type
-  DormouseStatement False = (MarchHareStatement False, HatterStatement False)
-  DormouseStatement True  = Not (MarchHareStatement False, HatterStatement False)
-\end{code}
+>   DormouseStatement : (truth : Bool) -> Type
+>   DormouseStatement False = (MarchHareStatement False, MadHatterStatement False)
+>   DormouseStatement True  = Not (MarchHareStatement False, MadHatterStatement False)
 
 
 === Revelation
 
-\begin{code}
-  Revelation : Type
-\end{code}
+>   Revelation : Type
 
 The March Hare and the Dormouse were not both speaking the truth, i.e.
 either the March Hare spoke the truth and the Dormouse did not
-\begin{code}
-  Revelation = Either (MarchHareStatement True,  DormouseStatement False)
-\end{code}
+
+>   Revelation = Either (MarchHareStatement True,  DormouseStatement False)
 
 or the March Hare did not speak the truth and the Dormouse did.
-\begin{code}
-                      (MarchHareStatement False, DormouseStatement True)
-\end{code}
+
+>                       (MarchHareStatement False, DormouseStatement True)
 
 
 === Conclusion
 
 The March Hare stole the jam.
 
-\begin{code}
-  Thief : MarchHareStatement _ -> HatterStatement _ -> DormouseStatement _
-       -> Revelation
-       -> Either MarchHare (Either MadHatter Dormouse)
-  Thief _ _ _ rev  = Left (either (fst . snd) fst rev)
-\end{code}
+>   Thief : SomeoneStoleTheJam -> Revelation
+>        -> (MarchHare, Not MadHatter, Not Dormouse)
+>   Thief (Left marchHare) _ = marchHare
+>   Thief _ (Left (itWas, (marchHare,_))) = absurd (itWas marchHare)
+>   Thief (Left (_,did,it)) (Right (marchHare,_)) = (marchHare,did,it)
+>   Thief (Right (Left (itWas,_))) (Right (him,_)) = absurd (itWas him)
+>   Thief (Right (Right (itWas,_))) (Left (_,(him,_))) = absurd (itWas him)
+>   Thief (Right (Right (itWas,_))) (Right (him,_)) = absurd (itWas him)
