@@ -1,0 +1,18 @@
+package alice
+
+modules    = Proof.DeMorgan
+
+-- tests      = ...
+
+brief      = "Alice in Puzzleland solutions."
+version    = 0.1.0
+readme     = README.md
+license    = WTFPL
+author     = "Eric Bailey"
+
+homepage   = https://github.com/yurrriq/alice-in-puzzleland
+sourceloc  = https://github.com/yurrriq/alice-in-puzzleland
+bugtracker = https://github.com/yurrriq/alice-in-puzzleland/issues
+
+sourcedir  = src
+opts       = "--total"
