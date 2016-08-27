@@ -95,10 +95,10 @@ The first clause is a simple pattern match.
 
 > Thief (Left  marchHare)         _                        = marchHare
 
-From the revelation, it follows that if the March Hare spoke the truth,
+From the revelation it follows that if the March Hare spoke the truth,
 then the Dormouse lied. If the March Hare spoke the truth, then they
 didn't steal the jam. But if the Dormouse lied, then so did the March Hare
-and is guilty BWOC.
+and is guilty *BWOC*.
 
 > Thief _                         (Left  (itWas,(them,_))) = absurd (itWas them)
 
@@ -107,7 +107,7 @@ If the March Hare lied, then they stole the jam.
 > Thief (Left  (_,did,it))        (Right (marchHare,_))    = (marchHare,did,it)
 
 If we assume the Mad Hatter stole jam and the March Hare lied,
-then the March Hare did it BWOC.
+then the March Hare did it *BWOC*.
 
 > Thief (Right (Left  (itWas,_))) (Right (them,_))         = absurd (itWas them)
 
