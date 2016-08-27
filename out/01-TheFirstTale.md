@@ -54,7 +54,7 @@ I never stole the jam!
 
 ```idris
 MarchHareStatement : (truth : Bool) -> Type
-MarchHareStatement False = MarchHare
+MarchHareStatement False =     MarchHare
 MarchHareStatement True  = Not MarchHare
 ```
 
@@ -65,8 +65,8 @@ One of us stole it, but it wasn't me!
 
 ```idris
 MadHatterStatement : (truth : Bool) -> Type
-MadHatterStatement False = (MadHatter, Not MarchHare, Not Dormouse)
-MadHatterStatement True  = (Not MadHatter, Either MarchHare Dormouse)
+MadHatterStatement False = (    MadHatter, Not    MarchHare, Not Dormouse)
+MadHatterStatement True  = (Not MadHatter, Either MarchHare      Dormouse)
 ```
 
 As per the Dormouse,
@@ -76,7 +76,7 @@ At least one of them (spoke the truth).
 
 ```idris
 DormouseStatement : (truth : Bool) -> Type
-DormouseStatement False = (MarchHareStatement False, MadHatterStatement False)
+DormouseStatement False =     (MarchHareStatement False, MadHatterStatement False)
 DormouseStatement True  = Not (MarchHareStatement False, MadHatterStatement False)
 ```
 
@@ -121,7 +121,7 @@ Thief : SomeoneStoleTheJam -> Revelation
 The first clause is a simple pattern match.
 
 ```idris
-Thief (Left marchHare) _ = marchHare
+Thief (Left  marchHare)         _                        = marchHare
 ```
 
 From the revelation, it follows that if the March Hare spoke the truth,
@@ -130,34 +130,34 @@ didn't steal the jam. But if the Dormouse lied, then so did the March Hare
 and is guilty BWOC.
 
 ```idris
-Thief _ (Left (itWas, (marchHare,_))) = absurd (itWas marchHare)
+Thief _                         (Left  (itWas,(them,_))) = absurd (itWas them)
 ```
 
 If the March Hare lied, then they stole the jam.
 
 ```idris
-Thief (Left (_,did,it)) (Right (marchHare,_)) = (marchHare,did,it)
+Thief (Left  (_,did,it))        (Right (marchHare,_))    = (marchHare,did,it)
 ```
 
 If we assume the Mad Hatter stole jam and the March Hare lied,
 then the March Hare did it BWOC.
 
 ```idris
-Thief (Right (Left (itWas,_))) (Right (them,_)) = absurd (itWas them)
+Thief (Right (Left  (itWas,_))) (Right (them,_))         = absurd (itWas them)
 ```
 
 Assume the Dormouse did it and lied. If the Dormouse lied,
 then the March Hare lied, and therefore stole the jam.
 
 ```idris
-Thief (Right (Right (itWas,_))) (Left (_,(them,_))) = absurd (itWas them)
+Thief (Right (Right (itWas,_))) (Left  (_,(them,_)))     = absurd (itWas them)
 ```
 
 Assume the Dormouse did it and the March Hare lied.
 If the March Hare lied then they are guilty.
 
 ```idris
-Thief (Right (Right (itWas,_))) (Right (them,_)) = absurd (itWas them)
+Thief (Right (Right (itWas,_))) (Right (them,_))         = absurd (itWas them)
 ```
 
-QED
+∎
