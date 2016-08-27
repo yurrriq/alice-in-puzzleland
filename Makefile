@@ -1,9 +1,14 @@
 IDRIS := idris
 PKG   := alice
 
+PANDOC   := @pandoc -f markdown_github+lhs -t markdown_github
+SED_HACK := sed 's/ sourceCode/idris/'
+
+MDS = out/01-TheFirstTale.md
+
 .PHONY: build clean clean-all install rebuild doc doc-clean test
 
-all: build
+all: build out
 
 build:
 	@$(IDRIS) --build $(PKG).ipkg
@@ -28,3 +33,8 @@ doc-clean:
 
 test:
 	@$(IDRIS) --testpkg $(PKG).ipkg
+
+out: $(MDS)
+
+out/01-TheFirstTale.md: src/WhoStoleTheTarts/TheFirstTale.lidr
+	$(PANDOC) $< | $(SED_HACK) > $@
