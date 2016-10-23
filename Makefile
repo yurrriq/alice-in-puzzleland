@@ -4,7 +4,9 @@ PKG   := alice
 PANDOC   := @pandoc -f markdown_github+lhs -t markdown_github
 SED_HACK := sed 's/ sourceCode/idris/'
 
-MDS = out/01-TheFirstTale.md
+MDS = \
+	out/01-TheFirstTale.md \
+	out/02-TheSecondTale.md
 
 .PHONY: build clean clean-all install rebuild doc doc-clean test
 
@@ -37,4 +39,7 @@ test:
 out: $(MDS)
 
 out/01-TheFirstTale.md: src/WhoStoleTheTarts/TheFirstTale.lidr
+	$(PANDOC) $< | $(SED_HACK) > $@
+
+out/02-TheSecondTale.md: src/WhoStoleTheTarts/TheSecondTale.lidr
 	$(PANDOC) $< | $(SED_HACK) > $@
